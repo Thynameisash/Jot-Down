@@ -15,4 +15,4 @@ app.get("/notes/:id", (req, res) => {
   res.send(note);
 });
 
-app.listen(5000, console.log("Server running on 5000"));
+app.listen(5000, console.log("Server running on port 5000"));
