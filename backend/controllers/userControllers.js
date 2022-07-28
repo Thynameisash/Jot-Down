@@ -37,10 +37,12 @@ const registerUser = asycnHandler(async (req, res) => {
 const loginUser = asycnHandler(async (req, res) => {
   const { email, pwd } = req.body;
   const user = await User.findOne({ email });
-
-  if (user && (await user.matchPwd(pwd))) {
+  console.log(user);
+  console.log(res.req.body);
+  if (await user.matchPasswd(pwd)) {
+    console.log("han bhai bdiya ?");
     res.json({
-      _id: user._id,
+      _id: user._id,  
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
@@ -49,7 +51,7 @@ const loginUser = asycnHandler(async (req, res) => {
     });
   } else {
     res.status(401);
-    throw new Error("Invalid EMail / Password");
+    throw new Error("Invalid Email / Password");
   }
 });
 module.exports = { registerUser, loginUser };

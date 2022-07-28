@@ -38,11 +38,11 @@ userModel.pre("save", async function (next) {
     next();
   }
   const salt = await bcrypt.genSalt(10);
-  this.pwd = await bcrypt.hash(this.pwd, salt);
+  this.pwd = bcrypt.hash(this.pwd, salt);
 });
 
-userModel.methods.matchPwd = async function (enteredPwd) {
-  return await bcrypt.compare(enteredPwd, this.pwd);
+userModel.methods.matchPasswd = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.pwd);
 };
 
 const User = mongoose.model("User", userModel);
