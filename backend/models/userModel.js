@@ -33,17 +33,17 @@ const userModel = mongoose.Schema(
   }
 );
 
+userModel.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.pwd);
+};
+
 userModel.pre("save", async function (next) {
-  if (!this.isModified("pwd")) {
+  if (!this.isModified("password")) {
     next();
   }
   const salt = await bcrypt.genSalt(10);
-  this.pwd = bcrypt.hash(this.pwd, salt);
+  this.pwd = await bcrypt.hash(this.pwd, salt);
 });
-
-userModel.methods.matchPasswd = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.pwd);
-};
 
 const User = mongoose.model("User", userModel);
 module.exports = User;
