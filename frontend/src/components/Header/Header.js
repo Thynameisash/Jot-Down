@@ -1,12 +1,25 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/userActions";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    navigate("/");
+  };
   return (
     <Navbar bg="primary" expand="lg" variant="dark">
       <Container>
@@ -46,7 +59,9 @@ const Header = () => {
               <NavDropdown.Item href="#action3">My Profile</NavDropdown.Item>
               <NavDropdown.Item href="#action4">Settings</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={logoutHandler}>
+                Logout
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

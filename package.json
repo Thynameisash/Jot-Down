@@ -21,6 +21,7 @@
     "mongoose": "^6.4.6",
     "nodemon": "^2.0.19",
     "react-router": "^6.3.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "redux-devtools-extension": "^2.13.9"
   }
 }

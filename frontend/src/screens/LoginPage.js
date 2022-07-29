@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react";
 import MainScreen from "../components/MainScreen";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -6,45 +7,32 @@ import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./LoginPage.css";
 import axios from "axios";
-import ApiConst from "../constants/apiconst";
+import ApiConst from "../constants/consts";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
-// import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../actions/userActions";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/mynotes");
+    }
+  }, [navigate, userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    try {
-      const config = {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-type": "application/json",
-        },
-      };
-
-      setLoading(true);
-      const { data } = await axios.post(
-        `${ApiConst.hosturl}/users/login`,
-        {
-          email,
-          password,
-        },
-        config
-      );
-      console.log(data);
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      setLoading(false);
-    } catch (error) {
-      setError(error.response.data.message);
-      console.log(error.message);
-      setLoading(false);
-    }
+    dispatch(login(email, password));
   };
 
   return (
