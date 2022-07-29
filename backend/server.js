@@ -15,14 +15,14 @@ app.get("/", (req, res) => {
   res.send("API Running");
 });
 
-// app.get("/notes", (req, res) => {
-//   res.send(notes);
-// });
+app.get("/notes", (req, res) => {
+  res.send(notes);
+});
 
-// app.get("/notes/:id", (req, res) => {
-//   const note = notes.find((n) => n.id == req.params.id);
-//   res.send(note);
-// });
+app.get("/notes/:id", (req, res) => {
+  const note = notes.find((n) => n.id == req.params.id);
+  res.send(note);
+});
 
 app.use("/users", userRoutes);
 app.use(notFound);

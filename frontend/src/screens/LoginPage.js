@@ -7,6 +7,10 @@ import { Link } from "react-router-dom";
 import "./LoginPage.css";
 import axios from "axios";
 import ApiConst from "../constants/apiconst";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
+// import { useNavigate } from "react-router-dom";
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,6 +21,8 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const config = {
+        method: "POST",
+        mode: "cors",
         headers: {
           "Content-type": "application/json",
         },
@@ -35,13 +41,17 @@ const LoginPage = () => {
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
     } catch (error) {
+      setError(error.response.data.message);
       console.log(error.message);
+      setLoading(false);
     }
   };
 
   return (
     <MainScreen title="LOGIN">
       <div className="loginform">
+        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+        {loading && <Loading />}
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>

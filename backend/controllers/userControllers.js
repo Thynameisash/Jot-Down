@@ -3,11 +3,11 @@ const User = require("../models/userModel");
 const genToken = require("../util/genToken");
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, pwd } = req.body;
+  const { email, password } = req.body;
 
   const user = await User.findOne({ email });
 
-  if (user && (await user.matchPassword(pwd))) {
+  if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
       name: user.name,
@@ -23,7 +23,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, pwd, pic } = req.body;
+  const { name, email, password, pic } = req.body;
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(404);
@@ -32,7 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
-    pwd,
+    password,
     pic,
   });
   if (user) {
