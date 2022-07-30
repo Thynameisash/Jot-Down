@@ -21,12 +21,6 @@ const MyNotes = ({ search }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const noteCreate = useSelector((state) => state.noteCreate);
-  const { success: successCreate } = noteCreate;
-
-  const noteUpdate = useSelector((state) => state.noteUpdate);
-  const { success: successUpdate } = noteUpdate;
-
   const noteDelete = useSelector((state) => state.noteList);
   const {
     loading: loadingDelete,
@@ -34,11 +28,11 @@ const MyNotes = ({ search }) => {
     success: successDelete,
   } = noteDelete;
 
-  const deleteNote = (id) => {
-    if (window.confirm("Confirm your deletion")) {
-      dispatch(deleteNoteAction(id));
-    }
-  };
+  const noteCreate = useSelector((state) => state.noteCreate);
+  const { success: successCreate } = noteCreate;
+
+  const noteUpdate = useSelector((state) => state.noteUpdate);
+  const { success: successUpdate } = noteUpdate;
 
   console.log(notes);
 
@@ -51,11 +45,16 @@ const MyNotes = ({ search }) => {
     dispatch,
     navigate,
     userInfo,
+    successDelete,
     successCreate,
     successUpdate,
-    successDelete,
   ]);
-
+  const deleteNote = (id) => {
+    if (window.confirm("Confirm your deletion")) {
+      dispatch(deleteNoteAction(id));
+    }
+    window.location.reload();
+  };
   return (
     <MainScreen title={`Hello ${userInfo.name}..`}>
       <Link to="/createnote">
@@ -63,12 +62,13 @@ const MyNotes = ({ search }) => {
           Create Note
         </Button>
       </Link>
+      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
       {errorDelete && (
         <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
       )}
-      {loadingDelete && <Loading />}
-      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
       {loading && <Loading />}
+      {loadingDelete && <Loading />}
+
       {notes &&
         notes
           .filter((filteredNote) =>

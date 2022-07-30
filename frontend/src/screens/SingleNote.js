@@ -72,6 +72,7 @@ function SingleNote() {
       dispatch(deleteNoteAction(id));
     }
     navigate("/mynotes");
+    window.location.reload();
   };
   return (
     <MainScreen title="Edit Note">
