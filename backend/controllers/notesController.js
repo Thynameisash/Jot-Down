@@ -8,7 +8,7 @@ const getNotes = asyncHandler(async (req, res) => {
 
 const createNote = asyncHandler(async (req, res) => {
   const { title, description, category } = req.body;
-
+  console.log("Createeeeeeeeeeeeeeeeee");
   if (!title || !description || !category) {
     res.status(400);
     throw new Error("Pls fill all the details");
@@ -20,7 +20,10 @@ const createNote = asyncHandler(async (req, res) => {
 });
 
 const getNotebyId = asyncHandler(async (req, res) => {
+  console.log(req + "------------------------------------------");
+  console.log();
   const note = await Note.findById(req.params.id);
+
   if (note) {
     res.json(note);
   } else {

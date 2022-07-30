@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/userActions";
 
-const Header = () => {
+const Header = ({ setSearch }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -37,33 +37,44 @@ const Header = () => {
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
+                onChange={(e) => setSearch(e.target.value)}
               />
               {/* <Button variant="success">Search</Button> */}
             </Form>
           </Nav>
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: "100px" }}
-            navbarScroll
-          >
-            <Nav.Link>
-              <Link to="/mynotes" style={{ color: "white", fontSize: 15 }}>
-                My Notes
-              </Link>
-            </Nav.Link>
-            <NavDropdown
-              title="Ash"
-              id="navbarScrollingDropdown"
-              style={{ fontSize: 15 }}
+          {userInfo ? (
+            <Nav
+              className="me-auto my-2 my-lg-0"
+              style={{ maxHeight: "100px" }}
+              navbarScroll
             >
-              <NavDropdown.Item href="#action3">My Profile</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">Settings</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logoutHandler}>
-                Logout
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
+              <Nav.Link>
+                <Link to="/mynotes" style={{ color: "white", fontSize: 15 }}>
+                  My Notes
+                </Link>
+              </Nav.Link>
+              <NavDropdown
+                title={userInfo?.name}
+                id="navbarScrollingDropdown"
+                style={{ fontSize: 15 }}
+              >
+                <NavDropdown.Item href="/profile">My Profile</NavDropdown.Item>
+                <NavDropdown.Item href="#action4">Settings</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={logoutHandler}>
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          ) : (
+            <Nav>
+              <Nav.Link>
+                <Link to="/login" style={{ color: "white", fontSize: 15 }}>
+                  Login
+                </Link>
+              </Nav.Link>
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>
